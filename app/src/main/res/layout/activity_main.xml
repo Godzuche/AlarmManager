@@ -10,7 +10,7 @@
         android:id="@+id/tV_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="08:45 PM"
+        android:text="12:00 AM"
         android:textSize="46sp"
         android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="parent"
