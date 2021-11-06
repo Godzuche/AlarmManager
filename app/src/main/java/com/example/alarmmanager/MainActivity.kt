@@ -29,20 +29,29 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        createNotificationChannel()
+
         binding.btnSelectTime.setOnClickListener {
             showTimePicker()
         }
 
         binding.btnSetAlarm.setOnClickListener {
-
             setAlarm()
-
         }
 
         binding.btnCancelAlarm.setOnClickListener {
-
+            cancelAlarm()
         }
 
+    }
+
+    private fun cancelAlarm() {
+        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+
+        alarmManager.cancel(pendingIntent)
+        Toast.makeText(this, "Alarm cancelled", Toast.LENGTH_LONG).show()
     }
 
     private fun setAlarm() {
@@ -52,12 +61,12 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, AlarmReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
 
-        alarmManager.setRepeating(
+        alarmManager.setExact(
             //real time clock and should wakeup the device
             AlarmManager.RTC_WAKEUP,
             calender.timeInMillis,
-            //repeat interval
-            AlarmManager.INTERVAL_DAY,
+            //repeat interval for the setRepeating
+//            AlarmManager.INTERVAL_DAY,
             pendingIntent)
 
         Toast.makeText(this, "Alarm set successfully", Toast.LENGTH_SHORT).show()
@@ -104,8 +113,10 @@ class MainActivity : AppCompatActivity() {
                 enableLights(true)
                 shouldVibrate()
             }
+
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
             notificationManager.createNotificationChannel(notificationChannel)
         }
     }

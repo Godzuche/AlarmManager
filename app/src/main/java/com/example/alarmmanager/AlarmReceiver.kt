@@ -1,16 +1,11 @@
 package com.example.alarmmanager
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -29,6 +24,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+
 
         with(NotificationManagerCompat.from(context)) {
             notify(notificationId, builder.build())
