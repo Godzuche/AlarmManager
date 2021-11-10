@@ -85,11 +85,12 @@ class MainActivity : AppCompatActivity() {
 
         picker.addOnPositiveButtonClickListener {
 
-            binding.tVTime.text = if (picker.hour > 12)
-                getString(R.string.time_format, (picker.hour - 12), picker.minute, " PM")
-//                    String.format("%2d", picker.hour - 12) + ":" + String.format("%2d", picker.minute) + " PM"
-            else
-                getString(R.string.time_format, picker.hour, picker.minute, " AM")
+            binding.tVTime.text = when {
+                picker.hour > 12 -> getString(R.string.time_format, (picker.hour - 12), picker.minute, " PM")
+                //                    String.format("%2d", picker.hour - 12) + ":" + String.format("%2d", picker.minute) + " PM"
+                picker.hour == 12 -> getString(R.string.time_format, (picker.hour), picker.minute, " PM")
+                else -> getString(R.string.time_format, picker.hour, picker.minute, " AM")
+            }
 
             calender = Calendar.getInstance().also {
                 it[Calendar.HOUR_OF_DAY] = picker.hour
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Alarms"
             val descriptionText = "Set alarms and get notified on important things..."
